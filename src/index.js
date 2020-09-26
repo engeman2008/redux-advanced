@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';    
 
 import counterReducer from './store/reducers/counter';
 import resultReducer from './store/reducers/result';
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     res: resultReducer
 });
 
+//logger middleware
 const logger = store => {
     return next => {
         return action => {
@@ -27,10 +29,10 @@ const logger = store => {
         }
     }
 }
-
+//for redux chrome extensions devtools
 const composeEnhancers = composeWithDevTools({});
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger)));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, thunk)));
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 registerServiceWorker();
